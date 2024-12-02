@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Candidato</title>
+</head>
+<body>
+    <h1>Cadastro de Candidato</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}<!--É necessario?-->
+        <button type="submit">Cadastrar</button>
+    </form>
+</body>
+</html>
+
+<!-- {% csrf_token %}
+Este é um token de segurança gerado pelo Django para proteger o formulário contra ataques CSRF (Cross-Site Request Forgery). Ele garante que o formulário seja enviado apenas de fontes confiáveis.
+
+Sem o {% csrf_token %}, o Django bloquearia o envio do formulário para evitar possíveis ataques.-->
