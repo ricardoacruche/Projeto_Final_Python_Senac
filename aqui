@@ -1,28 +1,43 @@
-# Create your views here.
+class Produto(models.Model):
+    nome = models.CharField(max_length=100)
+    preco = models.DecimalField(max_digits=10, decimal_places=2)
+    estoque = models.IntegerField()
+    categoria = models.CharField(max_length=50)
 
-def home(request):
-    return render(request, 'home.html')
+    def __str__(self):
+        return self.nome
 
-def sobre(request):
-    return render(request, 'sobre.html')
+class CustomUser(AbstractUser):
+    bio = models.TextField(blank=True, null=True)
 
-def contato(request):
-    return render(request, 'contato.html')
+    # Evitar conflito de relacionamentos reversos com 'groups' e 'user_permissions'
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',  # Nome do relacionamento reverso
+        blank=True
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_permissions_set',  # Nome do relacionamento reverso
+        blank=True
+    )
 
-def cursos(request):
-    cursos = Curso.objects.all()
-    return render(request, 'cursos.html', {'cursos': cursos})
+    def __str__(self):
+        return self.username
+    
+class Servico(models.Model):
+    nome = models.CharField(max_length=100)
+    descricao = models.TextField()
+    preco = models.DecimalField(max_digits=10, decimal_places=2)
 
-def servicos(request):
-    servicos = Servico.objects.all()  # Busca todos os registros da tabela Servico
-    return render(request, 'servicos.html', {'servicos': servicos})
+    def __str__(self):
+        return self.nome
 
-def registrar_usuario(request):
-    if  (request.method == 'POST'):
-        form= UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'registrar-usuario.html')
-        else:
-            form=UserCreationForm()
-    return render(request, 'registrar-usuario.html', {"form":form})
+class Curso(models.Model):
+    nome = models.CharField(max_length=100)
+    descricao = models.TextField()
+    carga_horaria = models.IntegerField()  # Exemplo de atributo de carga horária
+    preco = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.nome
